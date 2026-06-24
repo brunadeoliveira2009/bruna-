@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    import os
+
+# Create directory if it doesn't exist
+os.makedirs("makeup_site", exist_ok=True)
+
+html_content = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo da Make | As Melhores Marcas de Maquiagem</title>
+    <style>
+        /* Estilos Globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fdfbf9;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        /* Menu de Navegação */
+        header {
+            background-color: #ffffff;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #b5838d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #555555;
+            margin-left: 25px;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #b5838d;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=1600') no-repeat center center/cover;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 700px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .btn {
+            background-color: #b5838d;
+            color: #ffffff;
+            padding: 14px 35px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(181, 131, 141, 0.3);
+        }
+
+        .btn:hover {
+            background-color: #6d597a;
+            transform: translateY(-2px);
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #355070;
+            font-weight: 600;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #6d597a;
+            font-size: 16px;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Grid de Marcas */
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+            margin-bottom: 80px;
+        }
+
+        .brand-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .brand-img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .brand-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #b5838d;
+            background-color: #ffb5a7;
+            background-opacity: 0.2;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: 700;
+            align-self: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .brand-info h3 {
+            margin-bottom: 12px;
+            font-size: 24px;
+            color: #355070;
+        }
+
+        .brand-info p {
+            font-size: 15px;
+            color: #666666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .best-seller {
+            font-size: 14px;
+            background-color: #f8edeb;
+            padding: 10px;
+            border-left: 4px solid #b5838d;
+            border-radius: 0 6px 6px 0;
+            margin-top: auto;
+        }
+
+        .best-seller strong {
+            color: #6d597a;
+        }
+
+        /* Seção Curiosidades e Dicas */
+        .info-section {
+            background-color: #f8edeb;
+            padding: 60px 20px;
+            border-radius: 16px;
+            margin-bottom: 80px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .info-box {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .info-box h4 {
+            color: #6d597a;
+            font-size: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box p {
+            font-size: 14px;
+            color: #555555;
+        }
+
+        /* Guia de Ordem de Aplicação */
+        .makeup-steps {
+            margin-bottom: 60px;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .step-card {
+            background-color: #ffffff;
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-num {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #355070;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .step-card h5 {
+            margin: 15px 0 8px 0;
+            font-size: 16px;
+            color: #355070;
+        }
+
+        .step-card p {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: #355070;
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        footer a {
+            color: #ffb5a7;
+            text-decoration: none;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav a {
+                margin: 0 10px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Mundo da Make</div>
+        <nav>
+            <a href="#marcas">Marcas Famosas</a>
+            <a href="#curiosidades">Curiosidades</a>
+            <a href="#guia">Guia Passo a Passo</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>O Guia Completo da Maquiagem</h1>
+        <p>Explore as marcas mais desejadas, os produtos que são febre mundial e segredos que vão transformar a sua rotina de beleza.</p>
+        <a href="#marcas" class="btn">Conhecer Marcas</a>
+    </section>
+
+    <main class="container" id="marcas">
+        <h2 class="section-title">As Marcas Mais Desejadas</h2>
+        <p class="section-subtitle">Dos clássicos de luxo internacional aos maiores fenômenos nacionais e de custo-benefício.</p>
+        
+        <div class="brands-grid">
+            
+            <div class="brand-card">
+                <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=600" alt="Batom e Maquiagem Profissional" class="brand-img">
+                <div class="brand-info">
+                    <span class="brand-tag" style="background-color: #e5e5e5; color: #111;">Autoridade Global</span>
+                    <h3>MAC Cosmetics</h3>
+                    <p>Nascida no Canadá para atender fotógrafos e maquiadores profissionais, a MAC se tornou sinônimo de alta performance. É celebrada por ditar tendências nos bastidores das semanas de moda e por sua imensa cartela de cores inclusiva.</p>
+                    <div class="best-seller">
+                        <strong>Produto Ícone:</strong> Batom Matte "Ruby Woo" e Base Studio Fix.
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <img src="https://images.unsplash.com/photo-1631730359575-38e4755d772b?q=80&w=600" alt="Produtos de Maquiagem Leve e Natural" class="brand-img">
+                <div class="brand-info">
+                    <span class="brand-tag" style="background-color: #fcd5ce; color: #6d597a;">Tendência Máxima</span>
+                    <h3>Rare Beauty</h3>
+                    <p>Fundada pela artista Selena Gomez, a marca quebrou recordes de vendas com o propósito de abraçar as imperfeições e celebrar a singularidade. Suas texturas leves e fáceis de aplicar conquistaram a geração Z e o TikTok.</p>
+                    <div class="best-seller">
+                        <strong>Produto Ícone:</strong> Soft Pinch Liquid Blush (altamente pigmentado).
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=600" alt="Paleta de Sombras e Maquiagem Nacional" class="brand-img">
+                <div class="brand-info">
+                    <span class="brand-tag" style="background-color: #d8e2dc; color: #2a9d8f;">Orgulho Nacional</span>
+                    <h3>Linha Bruna Tavares</h3>
+                    <p>Liderada pela jornalista e empresária Bruna Tavares, a marca revolucionou o mercado nacional trazendo fórmulas e matérias-primas importadas a preços competitivos. Conhecida pela forte inovação e tecnologia em skincare combinado.</p>
+                    <div class="best-seller">
+                        <strong>Produto Ícone:</strong> BT Skin (Base fluida) e o BT Velvet (sombra líquida multifuncional).
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <img src="https://images.unsplash.com/photo-1625093742435-6fa192b6fb10?q=80&w=600" alt="Máscara de cílios e maquiagem moderna" class="brand-img">
+                <div class="brand-info">
+                    <span class="brand-tag" style="background-color: #fbc4ab; color: #9a031e;">Melhor Custo-Benefício</span>
+                    <h3>Maybelline NY</h3>
+                    <p>Presente em farmácias e bolsas de make do mundo inteiro, a Maybelline é pioneira no mercado de maquiagem acessível do dia a dia. Suas fórmulas de longa duração para olhos e lábios são referências insuperáveis de mercado.</p>
+                    <div class="best-seller">
+                        <strong>Produto Ícone:</strong> Máscara Sky High e Corretivo Instant Age Rewind.
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <img src="https://images.unsplash.com/photo-1608248597481-496100c8c836?q=80&w=600" alt="Perfume e Maquiagem de Luxo" class="brand-img">
+                <div class="brand-info">
+                    <span class="brand-tag" style="background-color: #e2eafc; color: #1d3557;">Alta Costura & Luxo</span>
+                    <h3>Dior Beauty</h3>
+                    <p>Unindo a alta costura parisiense à ciência cosmética, as maquiagens da Dior entregam sofisticação absoluta. Suas embalagens funcionam quase como acessórios de luxo, acompanhadas por texturas acetinadas e tecnologia anti-idade.</p>
+                    <div class="best-seller">
+                        <strong>Produto Ícone:</strong> Dior Lip Glow Oil e Base Dior Backstage.
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=600" alt="Diversidade de bases e iluminadores" class="brand-img">
+                <div class="brand-info">
+                    <span class="brand-tag" style="background-color: #f0efeb; color: #4a4e69;">Revolução da Indústria</span>
+                    <h3>Fenty Beauty</h3>
+                    <p>Criada por Rihanna, a marca mudou a história do mercado global ao lançar, logo em seu primeiro dia, 40 tons de base diferentes. Esse movimento ficou conhecido como o "Efeito Fenty", obrigando todas as outras marcas a serem inclusivas.</p>
+                    <div class="best-seller">
+                        <strong>Produto Ícone:</strong> Base Pro Filt'r e Iluminador Killawatt.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <section class="info-section" id="curiosidades">
+            <h2 class="section-title">O Universo da Maquiagem</h2>
+            <p class="section-subtitle">Fatos fascinantes, tendências globais e o que você precisa saber para entender o mercado.</p>
+            
+            <div class="info-grid">
+                <div class="info-box">
+                    <h4>✨ O Efeito Fenty</h4>
+                    <p>Antes de 2017, era comum encontrar marcas com apenas 10 ou 12 tons de base, excluindo peles retintas. A Fenty Beauty provou que diversidade não é apenas o certo a se fazer, mas também gera recordes de faturamento.</p>
+                </div>
+                <div class="info-box">
+                    <h4>🧪 Make-up Hybrid (Híbrida)</h4>
+                    <p>A maior tendência do mercado atual é a maquiagem com ativos de skincare. Bases com Ácido Hialurônico, Niacinamida e proteção solar tratam a pele enquanto cobrem as imperfeições.</p>
+                </div>
+                <div class="info-box">
+                    <h4>🐰 Beleza Cruelty-Free & Vegana</h4>
+                    <p>O consumidor moderno exige ética. Marcas que não testam em animais (Cruelty-Free) e livres de componentes de origem animal (Veganas) crescem mais rápido a cada ano no gosto popular.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="makeup-steps" id="guia">
+            <h2 class="section-title">A Ordem Correta da Make</h2>
+            <p class="section-subtitle">Fazer as etapas na sequência certa garante máxima durabilidade e acabamento impecável.</p>
+            
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h5>Skincare</h5>
+                    <p>Limpar e hidratar. Uma pele bem hidratada não deixa a base craquelar.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h5>Primer</h5>
+                    <p>Suaviza os poros, controla a oleosidade e fixa os produtos seguintes.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h5>Base & Corretivo</h5>
+                    <p>Uniformiza o tom da pele e corrige manchas ou olheiras pontuais.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <h5>Pó Facial</h5>
+                    <p>Sela os produtos cremosos, garantindo que nada saia do lugar ao longo do dia.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">5</div>
+                    <h5>Coloração & Brilho</h5>
+                    <p>Blush, contorno, iluminador, sombras, máscara de cílios e o batom final.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Mundo da Make - O seu portal definitivo sobre beleza.</p>
+        <p>Desenvolvido para apaixonados por maquiagem e cosméticos.</p>
+    </footer>
+
+</body>
+</html>
+"""
+
+with open("makeup_site/index.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("HTML site generated inside makeup_site/index.html")
+</body>
+</html>
